@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import AddName from './AddName'
 import Filtter from './Filtter'
 import RenderPersons from './RenderPersons'
-import axios from 'axios'
+
 import Notification from './Notification'
+import Services from './Services'
 
 
 
@@ -20,12 +21,11 @@ const App = () => {
 
   useEffect(()=>{
     console.log("effect")
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log("promise fulfilled")
-        setPersons(response.data)
-      })
+    Services.getAll().then(response => {
+          console.log("promise fulfilled")
+          setPersons(response.data)
+    })
+  
   }, [])
 
   const sendMessage = (message) => {

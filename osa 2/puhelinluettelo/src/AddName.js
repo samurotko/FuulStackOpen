@@ -76,6 +76,10 @@ const addName = (event) => {
 
       props.setNewName('')
       props.setNewNumber('')
+    }).catch(error =>{
+      console.log(error.response.data.error)
+      props.sendMessage(error.response.data.error)
+      props.setMessageColor('red')
     })
   
 

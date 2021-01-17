@@ -7,10 +7,8 @@ const config = require('../utils/config')
 
 
 blogsRouter.get('/', async (request, response) => { 
-  const blogs = await Blog.find({}).populate({
-    path:'users',
-    model:'user'
-})
+  //'user', {username: 1, name: 1}
+  const blogs = await Blog.find({}).populate('user', {username: 1, name: 1})
   response.json(blogs.map(b => b.toJSON()))
 })
 
@@ -44,7 +42,7 @@ blogsRouter.post('/', async (request, response) => {
       user: user._id
 
     })
-
+    console.log("posting blog",blog)
     
 
     if(!blog.likes){
@@ -61,6 +59,7 @@ blogsRouter.post('/', async (request, response) => {
 
   blogsRouter.put('/:id', async (request, response) => {
     const body = request.body
+    console.log("body",body)
   
     const blog = {
       title: body.title,
@@ -68,6 +67,7 @@ blogsRouter.post('/', async (request, response) => {
       url: body.url,
       likes: body.likes
     }
+    console.log("blogbody",blog)
   
     const updated = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
     response.json(updated)
@@ -77,6 +77,8 @@ blogsRouter.post('/', async (request, response) => {
 
   blogsRouter.delete('/:id', async (request, response) => {
     const body = request.body
+    console.log("body",body)
+    console.log("id",request.params.id,typeof request.params.id)
 
 
     const blog = await Blog.findById(request.params.id)
@@ -89,10 +91,13 @@ blogsRouter.post('/', async (request, response) => {
     }
     if(blog.user.toString()===decodedToken.id.toString()){
       console.log("deleting...")
-      await Blog.findByIdAndDelete(request.params.id)
+      const d= await Blog.findByIdAndDelete(request.params.id)
+      console.log('deled succesfully',d)
+      response.json(d)
     }else{
       return response.status(401).json({ error: 'user unauthorised' })
     }
+    
     
     
   })

@@ -5,7 +5,8 @@ const Blog = require('../models/blog')
 require('express-async-errors')
 
 usersRouter.get('/', async (request, response) => {
-  const users = await User.find({}).populate('blog')
+  //'blogs', {title: 1, author: 1, url: 1 }
+  const users = await User.find({}).populate('blogs', {title: 1, author: 1, url: 1 })
   console.log("users are",users)
   response.json(users.map(u => u.toJSON()))
 })
