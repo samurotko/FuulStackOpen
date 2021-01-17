@@ -46,7 +46,8 @@ const Blog = () => {
             url: blog.url,
             likes: blog.likes +1,
             user: blog.user,
-            id: blog.id
+            id: blog.id,
+            comments: blog.comments
           }
 
           dispatch(like(newBlog))
